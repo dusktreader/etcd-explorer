@@ -1,0 +1,19 @@
+<form [formGroup]="connectForm" (ngSubmit)="connect()">
+    <mat-form-field>
+      <input matInput placeholder="hostname" formControlName="hostname" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="port" formControlName="port" />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      submit
+      color="primary"
+      [disabled]="!connectForm.valid"
+    >
+      <mat-icon>input</mat-icon>
+      Connect
+    </button>
+</form>

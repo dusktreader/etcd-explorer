@@ -28,6 +28,9 @@ import { environment } from '../environments/environment';
 
 import { MainComponent } from '@app/main/main.component';
 import { reducer as etcdReducer } from '@app/store/reducers/etcd.reducer';
+import { reducer as timerReducer } from '@app/store/reducers/timer.reducer';
+import { Effects as EtcdEffects } from '@app/store/effects/etcd.effect';
+import { Effects as TimerEffects } from '@app/store/effects/timer.effect';
 
 import { EtcdService } from '@app/services/etcd.service';
 
@@ -41,8 +44,11 @@ import { EtcdService } from '@app/services/etcd.service';
     AppRoutingModule,
     StoreModule.forRoot({
       etcd: etcdReducer,
+      timer: timerReducer,
     }),
     EffectsModule.forRoot([
+      EtcdEffects,
+      TimerEffects,
     ]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule,

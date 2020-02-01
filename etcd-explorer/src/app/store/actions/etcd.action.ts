@@ -1,7 +1,7 @@
 import { createAction } from '@ngrx/store';
 
 import { KV } from '@app/models/kvs.model';
-import { IEtcdHost } from '@app/models/etcd-host.model';
+import { EtcdHost } from '@app/models/etcd-host.model';
 
 export interface IFail {
   err: any;
@@ -9,12 +9,12 @@ export interface IFail {
 }
 
 export const TConnect = '[Connect] Start connecting to the etcd host';
-export const connect = createAction(TConnect, (payload: IEtcdHost) => ({
+export const connect = createAction(TConnect, (payload: EtcdHost) => ({
   payload,
 }));
 
 export const TConnectFinal = '[Connect] Finalize connecting to the etcd host';
-export const connectFinal = createAction(TConnectFinal, (payload: IEtcdHost) => ({
+export const connectFinal = createAction(TConnectFinal, (payload: EtcdHost) => ({
   payload,
 }));
 
@@ -23,8 +23,14 @@ export const connectFail = createAction(TConnectFail, (payload: IFail) => ({
   payload,
 }));
 
+export interface ILoadKV {
+  host: EtcdHost;
+  prefix: string;
+}
 export const TLoadKV = '[LoadKV] Start loading key-values from etcd';
-export const loadKV = createAction(TLoadKV);
+export const loadKV = createAction(TLoadKV, (payload: ILoadKV) => ({
+  payload,
+}));
 
 export const TLoadKVFinal = '[LoadKV] Finalize loading key-values from etcd';
 export const loadKVFinal = createAction(TLoadKVFinal, (payload: Array<KV>) => ({

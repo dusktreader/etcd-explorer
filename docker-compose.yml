@@ -1,20 +1,17 @@
 version: "3.3"
 services:
 
-  e3w:
-    image: soyking/e3w
-    volumes:
-      - ./etc/config.default.ini:/app/conf/config.default.ini
+  etcd:
+    image: bitnami/etcd
     ports:
-      - "8080:8080"
+      - 2379:2379
+      - 2380:2380
     networks:
       - etcd_net
-    depends_on:
-      - etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
 
 networks:
   etcd_net:
     driver: bridge
-
-  etcd_external:
-    driver: overlay

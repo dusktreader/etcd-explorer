@@ -1,4 +1,5 @@
 <form [formGroup]="connectForm" (ngSubmit)="connect()">
+  <div fxLayout="row" fxLayoutAlign="space-between">
     <mat-form-field>
       <input matInput placeholder="hostname" formControlName="hostname" />
     </mat-form-field>
@@ -9,11 +10,34 @@
 
     <button
       mat-raised-button
-      submit
+      type="submit"
       color="primary"
       [disabled]="!connectForm.valid"
     >
       <mat-icon>input</mat-icon>
       Connect
     </button>
+    <button
+      mat-raised-button
+      type="button"
+      color="warn"
+      (click)="disconnect()"
+      [disabled]="!(connected$ | async)"
+    >
+      <mat-icon>cancel</mat-icon>
+      Disconnect
+    </button>
+  </div>
 </form>
+
+
+<mat-list>
+  <mat-list-item *ngFor="let kv of kvs$ | async">
+    <div fxLayout="row" fxLayoutGap="10px">
+      <span>{{ kv.key }}</span>
+      <span>{{ kv.value }}</span>
+      <button matButton (click)="tweak(kv)"><mat-icon>edit</mat-icon></button>
+      <button matButton (click)="drop(kv)"><mat-icon>delete</mat-icon></button>
+    </div>
+  </mat-list-item>
+</mat-list>

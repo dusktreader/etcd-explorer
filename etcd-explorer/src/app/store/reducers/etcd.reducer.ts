@@ -1,6 +1,11 @@
 import { createReducer, on, State, Action } from '@ngrx/store';
 
-import { connectFinal, connectFail, loadKVFinal } from '@app/store/actions/etcd.action';
+import {
+  connectFinal,
+  connectFail,
+  disconnect,
+  loadKVFinal,
+} from '@app/store/actions/etcd.action';
 import { initialState, IState } from '@app/store/states/etcd.state';
 
 export function reducer(state: IState | undefined, action: Action) {
@@ -13,12 +18,17 @@ export function reducer(state: IState | undefined, action: Action) {
     })),
 
     on(connectFail, previousState => ({
-      ...state,
+      ...previousState,
+      host: null,
+    })),
+
+    on(disconnect, previousState => ({
+      ...previousState,
       host: null,
     })),
 
     on(loadKVFinal, (previousState, { payload }) => ({
-      ...state,
+      ...previousState,
       kvs: payload,
     })),
 

@@ -1,0 +1,9 @@
+<form [formGroup]="editForm" (ngSubmit)="update()">
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field>
+      <input matInput [placeholder]="kv.key" formControlName="value" />
+    </mat-form-field>
+    <button matButton type="submit"><mat-icon>done</mat-icon></button>
+    <button matButton type="button" (click)="cancel()"><mat-icon>cancel</mat-icon></button>
+  </div>
+</form>

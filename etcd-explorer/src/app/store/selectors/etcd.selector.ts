@@ -19,3 +19,8 @@ export const selectHostNow = createSelector(
   selectNow,
   (host: EtcdHost, now: moment.Moment) => ({ host, now }),
 );
+
+export const selectKVs = createSelector(
+  selectFeature,
+  (state: IEtcdState) => state.kvs,
+);

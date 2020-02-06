@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { MatDialog } from '@angular/material';
+import {
+  MatPaginator,
+  MatSort,
+  MatTableDataSource,
+  MatDialog,
+  Sort,
+} from '@angular/material';
 import { map, tap, filter } from 'rxjs/operators';
 
 import { connect, disconnect, loadKV } from '@app/store/actions/etcd.action';
@@ -22,8 +28,18 @@ import { EditDialogComponent } from '@app/main/edit-dialog/edit-dialog.component
 })
 export class MainComponent implements OnInit {
   connectForm: FormGroup;
-  kvs$: Observable<Array<KV>>;
   connected$: Observable<boolean>;
+
+  public noData: boolean;
+  public dataSource = new MatTableDataSource<KV>();
+  displayedColumns = ['key', 'value' ];  // lastUpdated?
+  paginatorSettings = {
+    pageSize: 25,
+    pageSizeOptions: [5, 10, 25, 50, 100],
+  };
+
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(
     private store: Store<IAppState>,
@@ -33,6 +49,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.noData = true;
     this.connectForm = this.formBuilder.group({
       hostname: ['localhost', Validators.required],
       port: ['2379', Validators.required],
@@ -51,9 +68,15 @@ export class MainComponent implements OnInit {
       map(host => !!host),
     );
 
-    this.kvs$ = this.store.pipe(
+    this.store.pipe(
       select(selectKVs),
-    );
+      map(kvs => !kvs ? [] : kvs),
+    ).subscribe(kvs => {
+      this.dataSource.data = kvs;
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.noData = kvs.length === 0;
+    });
   }
 
   connect() {

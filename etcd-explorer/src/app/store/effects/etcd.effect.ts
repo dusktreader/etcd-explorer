@@ -21,6 +21,9 @@ import {
   setKV,
   setKVFinal,
   setKVFail,
+  deleteKV,
+  deleteKVFinal,
+  deleteKVFail,
 } from '@app/store/actions/etcd.action';
 
 @Injectable()
@@ -79,6 +82,23 @@ export class Effects {
           console.error(message);
           console.log(err);
           return of(setKVFail({err, message}));
+        }),
+      )),
+    );
+  });
+
+  deleteKV$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(deleteKV),
+      map(action => action.payload),
+      withLatestFrom(this.store.pipe(select(selectHost))),
+      mergeMap(([key, host]: [string, EtcdHost]) => this.etcdService.deleteKV(host, key).pipe(
+        map(() => deleteKVFinal(key)),
+        catchError(err => {
+          const message = `Failed to delete key-value at ${key}`;
+          console.error(message);
+          console.log(err);
+          return of(deleteKVFail({err, message}));
         }),
       )),
     );

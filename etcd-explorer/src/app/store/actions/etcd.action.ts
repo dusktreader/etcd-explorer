@@ -59,3 +59,18 @@ export const TSetKVFail = '[SetKV] Fail setting the key-value';
 export const setKVFail = createAction(TSetKVFail, (payload: IFail) => ({
   payload,
 }));
+
+export const TDeleteKV = '[DeleteKV] Start deleting the key-value';
+export const deleteKV = createAction(TDeleteKV, (payload: string) => ({
+  payload
+}));
+
+export const TDeleteKVFinal = '[DeleteKV] Finalize deleting the key-value';
+export const deleteKVFinal = createAction(TDeleteKVFinal, (payload: string) => ({
+  payload,
+}));
+
+export const TDeleteKVFail = '[DeleteKV] Fail deleting the key-value';
+export const deleteKVFail = createAction(TSetKVFail, (payload: IFail) => ({
+  payload,
+}));

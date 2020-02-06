@@ -51,4 +51,14 @@ export class EtcdService {
       },
     );
   }
+
+  deleteKV(host: EtcdHost, key: string) {
+    return this.http.post<any>(
+      `${host.url}/kv/deleterange`,
+      {
+        key: Base64.encode(key),
+        range_end: Base64.encode('\0'),
+      },
+    );
+  }
 }

@@ -17,17 +17,24 @@ import {
   MatTabsModule,
   MatExpansionModule,
   MatGridListModule,
+  MatDialogModule,
+  MatTableModule,
+  MatPaginatorModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 import { environment } from '../environments/environment';
 
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
 import { MainComponent } from '@app/main/main.component';
+import { EditDialogComponent } from '@app/main/edit-dialog/edit-dialog.component';
+
 import { reducer as etcdReducer } from '@app/store/reducers/etcd.reducer';
 import { reducer as timerReducer } from '@app/store/reducers/timer.reducer';
 import { Effects as EtcdEffects } from '@app/store/effects/etcd.effect';
@@ -39,6 +46,7 @@ import { EtcdService } from '@app/services/etcd.service';
   declarations: [
     AppComponent,
     MainComponent,
+    EditDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,10 +78,16 @@ import { EtcdService } from '@app/services/etcd.service';
     MatTabsModule,
     MatExpansionModule,
     MatGridListModule,
+    MatDialogModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   providers: [
     EtcdService,
   ],
-  bootstrap: [AppComponent]
+  entryComponents: [
+    EditDialogComponent,
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

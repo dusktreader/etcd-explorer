@@ -5,6 +5,7 @@ import {
   connectFail,
   disconnect,
   loadKVFinal,
+  deleteKVFinal,
 } from '@app/store/actions/etcd.action';
 import { initialState, IState } from '@app/store/states/etcd.state';
 
@@ -25,11 +26,17 @@ export function reducer(state: IState | undefined, action: Action) {
     on(disconnect, previousState => ({
       ...previousState,
       host: null,
+      kvs: null,
     })),
 
     on(loadKVFinal, (previousState, { payload }) => ({
       ...previousState,
       kvs: payload,
+    })),
+
+    on(deleteKVFinal, (previousState, { payload }) => ({
+      ...previousState,
+      kvs: previousState.kvs.filter(kv => kv.key !== payload),
     })),
 
   )(state, action);

@@ -9,7 +9,7 @@ import { take } from 'rxjs/operators';
 
 import { KV } from '@app/models/kvs.model';
 import { IAppState } from '@app/store/states/app.state';
-import { setKV } from '@app/store/actions/etcd.action';
+import { setKV, deleteKV } from '@app/store/actions/etcd.action';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -35,8 +35,13 @@ export class EditDialogComponent implements OnInit {
   update() {
     this.store.dispatch(setKV({
       ...this.kv,
-      value: this.editForm.controls.value.value()
+      value: this.editForm.controls.value.value,
     }));
+    this.dialogRef.close();
+  }
+
+  delete() {
+    this.store.dispatch(deleteKV(this.kv.key));
     this.dialogRef.close();
   }
 

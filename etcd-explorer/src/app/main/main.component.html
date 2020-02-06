@@ -30,14 +30,34 @@
   </div>
 </form>
 
+<div *ngIf="!noData">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="key">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Key</th>
+      <td mat-cell *matCellDef="let element">
+          {{ element.key }}
+      </td>
+    </ng-container>
 
-<mat-list>
-  <mat-list-item *ngFor="let kv of kvs$ | async">
-    <div fxLayout="row" fxLayoutGap="10px">
-      <span>{{ kv.key }}</span>
-      <span>{{ kv.value }}</span>
-      <button matButton (click)="tweak(kv)"><mat-icon>edit</mat-icon></button>
-      <button matButton (click)="drop(kv)"><mat-icon>delete</mat-icon></button>
-    </div>
-  </mat-list-item>
-</mat-list>
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Value</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.value }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="tweak(row)"
+        tabindex="0"
+        (keydown.enter)="previewDocument(row)"
+        (keydown.space)="previewDocument(row)"></tr>
+  </table>
+  <mat-paginator
+    [pageSize]="paginatorSettings.pageSize"
+    [hidePageSize]="true"
+    showFirstLastButtons>
+  </mat-paginator>
+</div>

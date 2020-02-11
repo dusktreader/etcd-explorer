@@ -21,6 +21,9 @@ import {
   setKV,
   setKVFinal,
   setKVFail,
+  createKV,
+  createKVFinal,
+  createKVFail,
   deleteKV,
   deleteKVFinal,
   deleteKVFail,
@@ -82,6 +85,23 @@ export class Effects {
           console.error(message);
           console.log(err);
           return of(setKVFail({err, message}));
+        }),
+      )),
+    );
+  });
+
+  createKV$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(createKV),
+      map(action => action.payload),
+      withLatestFrom(this.store.pipe(select(selectHost))),
+      mergeMap(([kv, host]: [KV, EtcdHost]) => this.etcdService.setKV(host, kv).pipe(
+        map(() => createKVFinal(kv)),
+        catchError(err => {
+          const message = `Failed to create key-value at ${kv.key}`;
+          console.error(message);
+          console.log(err);
+          return of(createKVFail({err, message}));
         }),
       )),
     );

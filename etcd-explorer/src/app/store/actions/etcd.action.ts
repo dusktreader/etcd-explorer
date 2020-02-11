@@ -50,7 +50,7 @@ export const setKV = createAction(TSetKV, (payload: KV) => ({
   payload
 }));
 
-export const TSetKVFinal = '[LoadKV] Finalize setting the key-value';
+export const TSetKVFinal = '[SetKV] Finalize setting the key-value';
 export const setKVFinal = createAction(TSetKVFinal, (payload: KV) => ({
   payload,
 }));
@@ -71,6 +71,22 @@ export const deleteKVFinal = createAction(TDeleteKVFinal, (payload: string) => (
 }));
 
 export const TDeleteKVFail = '[DeleteKV] Fail deleting the key-value';
-export const deleteKVFail = createAction(TSetKVFail, (payload: IFail) => ({
+export const deleteKVFail = createAction(TDeleteKVFail, (payload: IFail) => ({
   payload,
 }));
+
+export const TCreateKV = '[CreateKV] Start creating the key-value';
+export const createKV = createAction(TCreateKV, (payload: KV) => ({
+  payload
+}));
+
+export const TCreateKVFinal = '[CreateKV] Finalize creating the key-value';
+export const createKVFinal = createAction(TCreateKVFinal, (payload: KV) => ({
+  payload,
+}));
+
+export const TCreateKVFail = '[CreateKV] Fail creating the key-value';
+export const createKVFail = createAction(TCreateKVFail, (payload: IFail) => ({
+  payload,
+}));
+

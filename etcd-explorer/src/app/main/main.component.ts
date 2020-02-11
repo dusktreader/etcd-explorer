@@ -59,7 +59,6 @@ export class MainComponent implements OnInit {
       filter(({host, now}) => !!host),
     ).subscribe(
       ({host, now}) => {
-        console.log('HOST: ', host);
         this.store.dispatch(loadKV({host, prefix: 'pa'}));
       },
     );
@@ -91,7 +90,6 @@ export class MainComponent implements OnInit {
   }
 
   tweak(kv: KV) {
-    console.log('TWEAK: ', kv);
     this.dialog.open(EditDialogComponent, {data: kv});
   }
 

@@ -19,6 +19,7 @@ export class NewDialogComponent implements OnInit {
   newForm: FormGroup;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public prefix: string,
     public dialogRef: MatDialogRef<NewDialogComponent>,
     private store: Store<IAppState>,
     private formBuilder: FormBuilder,
@@ -33,7 +34,7 @@ export class NewDialogComponent implements OnInit {
 
   create() {
     this.store.dispatch(createKV({
-      key: this.newForm.controls.key.value,
+      key: `${this.prefix}${this.newForm.controls.key.value}`,
       value: this.newForm.controls.value.value,
     }));
     this.dialogRef.close();

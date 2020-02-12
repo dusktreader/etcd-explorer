@@ -1,10 +1,17 @@
 <app-login></app-login>
+<form [formGroup]="prefixForm">
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field>
+      <input matInput placeholder="prefix" formControlName="prefix" />
+    </mat-form-field>
+  </div>
+</form>
 <div *ngIf="!noData">
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="key">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Key</th>
       <td mat-cell *matCellDef="let element">
-          {{ element.key }}
+          {{ _stripPrefix(element.key) }}
       </td>
     </ng-container>
 

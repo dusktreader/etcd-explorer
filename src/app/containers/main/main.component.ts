@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatExpansionPanel } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
@@ -26,7 +27,7 @@ import { NewDialogComponent } from '@app/presentation/new-dialog/new-dialog.comp
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-
+  prefixForm: FormGroup;
   public noData: boolean;
   public dataSource = new MatTableDataSource<KV>();
   displayedColumns = ['key', 'value' ];  // lastUpdated?
@@ -41,16 +42,20 @@ export class MainComponent implements OnInit {
   constructor(
     private store: Store<IAppState>,
     public dialog: MatDialog,
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit() {
+    this.prefixForm = this.formBuilder.group({
+      prefix: ['pa/'],
+    });
     this.noData = true;
     this.store.pipe(
       select(selectHostNow),
-      filter(({host, now}) => !!host),
+      filter(({ host, now }) => !!host),
     ).subscribe(
-      ({host, now}) => {
-        this.store.dispatch(loadKV({host, prefix: 'pa'}));
+      ({ host, now }) => {
+        this.store.dispatch(loadKV({host, prefix: 'pa/'}));
       },
     );
     this.store.pipe(
@@ -64,12 +69,16 @@ export class MainComponent implements OnInit {
     });
   }
 
+  _stripPrefix(key) {
+    return key.replace(this.prefixForm.controls.prefix.value, '');
+  }
+
   add() {
-    this.dialog.open(NewDialogComponent);
+    this.dialog.open(NewDialogComponent, { data: this.prefixForm.controls.prefix.value });
   }
 
   tweak(kv: KV) {
-    this.dialog.open(EditDialogComponent, {data: kv});
+    this.dialog.open(EditDialogComponent, { data: kv });
   }
 
   drop(key: string) {}

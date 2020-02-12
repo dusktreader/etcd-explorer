@@ -32,8 +32,10 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { MainComponent } from '@app/main/main.component';
-import { EditDialogComponent } from '@app/main/edit-dialog/edit-dialog.component';
+import { MainComponent } from '@app/containers/main/main.component';
+import { LoginComponent } from '@app/presentation/login/login.component';
+import { EditDialogComponent } from '@app/presentation/edit-dialog/edit-dialog.component';
+import { NewDialogComponent } from '@app/presentation/new-dialog/new-dialog.component';
 
 import { reducer as etcdReducer } from '@app/store/reducers/etcd.reducer';
 import { reducer as timerReducer } from '@app/store/reducers/timer.reducer';
@@ -46,7 +48,9 @@ import { EtcdService } from '@app/services/etcd.service';
   declarations: [
     AppComponent,
     MainComponent,
+    LoginComponent,
     EditDialogComponent,
+    NewDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,7 +91,10 @@ import { EtcdService } from '@app/services/etcd.service';
   ],
   entryComponents: [
     EditDialogComponent,
+    NewDialogComponent,
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [
+    AppComponent,
+  ],
 })
 export class AppModule { }

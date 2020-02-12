@@ -43,7 +43,7 @@ export function reducer(state: IState | undefined, action: Action) {
 
     on(createKVFinal, (previousState, { payload }) => ({
       ...previousState,
-      kvs: [...previousState.kvs, payload],
+      kvs: [...previousState.kvs, payload].sort((kv1, kv2) => kv1.key.localeCompare(kv2.key)),
     })),
 
     on(deleteKVFinal, (previousState, { payload }) => ({

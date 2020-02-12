@@ -79,6 +79,7 @@ export class Effects {
       map(action => action.payload),
       withLatestFrom(this.store.pipe(select(selectHost))),
       mergeMap(([kv, host]: [KV, EtcdHost]) => this.etcdService.setKV(host, kv).pipe(
+        tap(result => console.log('SET KV RESULT: ', result)),
         map(() => setKVFinal(kv)),
         catchError(err => {
           const message = `Failed to set key-value at ${kv.key}`;
@@ -96,6 +97,7 @@ export class Effects {
       map(action => action.payload),
       withLatestFrom(this.store.pipe(select(selectHost))),
       mergeMap(([kv, host]: [KV, EtcdHost]) => this.etcdService.setKV(host, kv).pipe(
+        tap(result => console.log('CREATE KV RESULT: ', result)),
         map(() => createKVFinal(kv)),
         catchError(err => {
           const message = `Failed to create key-value at ${kv.key}`;
@@ -113,6 +115,7 @@ export class Effects {
       map(action => action.payload),
       withLatestFrom(this.store.pipe(select(selectHost))),
       mergeMap(([key, host]: [string, EtcdHost]) => this.etcdService.deleteKV(host, key).pipe(
+        tap(result => console.log('DELETE KV RESULT: ', result)),
         map(() => deleteKVFinal(key)),
         catchError(err => {
           const message = `Failed to delete key-value at ${key}`;

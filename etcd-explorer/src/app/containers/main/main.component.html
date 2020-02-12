@@ -1,35 +1,4 @@
-<form [formGroup]="connectForm" (ngSubmit)="connect()">
-  <div fxLayout="row" fxLayoutAlign="space-between">
-    <mat-form-field>
-      <input matInput placeholder="hostname" formControlName="hostname" />
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="port" formControlName="port" />
-    </mat-form-field>
-
-    <button
-      mat-raised-button
-      type="submit"
-      color="primary"
-      [disabled]="!connectForm.valid"
-    >
-      <mat-icon>input</mat-icon>
-      Connect
-    </button>
-    <button
-      mat-raised-button
-      type="button"
-      color="warn"
-      (click)="disconnect()"
-      [disabled]="!(connected$ | async)"
-    >
-      <mat-icon>cancel</mat-icon>
-      Disconnect
-    </button>
-  </div>
-</form>
-
+<app-login></app-login>
 <div *ngIf="!noData">
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="key">
@@ -60,4 +29,7 @@
     [hidePageSize]="true"
     showFirstLastButtons>
   </mat-paginator>
+</div>
+<div>
+  <button mat-fab (click)="add()"><mat-icon>playlist_add</mat-icon></button>
 </div>

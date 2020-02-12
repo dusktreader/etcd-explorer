@@ -1,0 +1,45 @@
+<mat-accordion>
+  <mat-expansion-panel #panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ titleString$ | async }}
+      </mat-panel-title>
+      <mat-panel-description></mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form [formGroup]="connectForm">
+      <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
+        <mat-form-field>
+          <input matInput placeholder="hostname" formControlName="hostname" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="port" formControlName="port" />
+        </mat-form-field>
+      </div>
+    </form>
+
+    <mat-action-row>
+      <button
+        mat-raised-button
+        type="button"
+        color="primary"
+        (click)="connect()"
+        [disabled]="!connectForm.valid"
+      >
+        <mat-icon>input</mat-icon>
+        Connect
+      </button>
+      <button
+        mat-raised-button
+        type="button"
+        color="warn"
+        (click)="disconnect()"
+        [disabled]="!(connected$ | async)"
+      >
+        <mat-icon>cancel</mat-icon>
+        Disconnect
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

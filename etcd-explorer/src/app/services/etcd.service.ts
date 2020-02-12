@@ -35,10 +35,16 @@ export class EtcdService {
         range_end: Base64.encode('\0'),
       },
     ).pipe(
-      map(response => response.kvs.map(rawKV => ({
-        key: Base64.decode(rawKV.key),
-        value: Base64.decode(rawKV.value),
-      } as KV))),
+      map(response => {
+        if (response.kvs) {
+          return response.kvs.map(rawKV => ({
+            key: Base64.decode(rawKV.key),
+            value: Base64.decode(rawKV.value),
+          } as KV));
+        } else {
+          return [];
+        }
+      }),
     );
   }
 
@@ -55,10 +61,7 @@ export class EtcdService {
   deleteKV(host: EtcdHost, key: string) {
     return this.http.post<any>(
       `${host.url}/kv/deleterange`,
-      {
-        key: Base64.encode(key),
-        range_end: Base64.encode('\0'),
-      },
+      { key: Base64.encode(key) },
     );
   }
 }

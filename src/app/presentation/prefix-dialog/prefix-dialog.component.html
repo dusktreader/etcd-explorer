@@ -1,10 +1,7 @@
-<form [formGroup]="newForm" (ngSubmit)="create()">
+<form [formGroup]="prefixForm" (ngSubmit)="setPrefix()">
   <div fxLayout="row" fxLayoutGap="10px">
     <mat-form-field>
-      <input matInput placeholder="key" formControlName="key" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="value" formControlName="value" />
+      <input matInput placeholder="prefix" formControlName="prefix" />
     </mat-form-field>
     <button matButton type="submit"><mat-icon>save</mat-icon></button>
     <button matButton type="button" (click)="cancel()"><mat-icon>cancel</mat-icon></button>

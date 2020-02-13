@@ -36,6 +36,7 @@ import { MainComponent } from '@app/containers/main/main.component';
 import { LoginComponent } from '@app/presentation/login/login.component';
 import { EditDialogComponent } from '@app/presentation/edit-dialog/edit-dialog.component';
 import { NewDialogComponent } from '@app/presentation/new-dialog/new-dialog.component';
+import { PrefixDialogComponent } from '@app/presentation/prefix-dialog/prefix-dialog.component';
 
 import { reducer as etcdReducer } from '@app/store/reducers/etcd.reducer';
 import { reducer as timerReducer } from '@app/store/reducers/timer.reducer';
@@ -51,6 +52,7 @@ import { EtcdService } from '@app/services/etcd.service';
     LoginComponent,
     EditDialogComponent,
     NewDialogComponent,
+    PrefixDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,6 +94,7 @@ import { EtcdService } from '@app/services/etcd.service';
   entryComponents: [
     EditDialogComponent,
     NewDialogComponent,
+    PrefixDialogComponent,
   ],
   bootstrap: [
     AppComponent,

@@ -8,6 +8,7 @@ import {
   setKVFinal,
   createKVFinal,
   deleteKVFinal,
+  setPrefix,
 } from '@app/store/actions/etcd.action';
 import { initialState, IState } from '@app/store/states/etcd.state';
 
@@ -49,6 +50,11 @@ export function reducer(state: IState | undefined, action: Action) {
     on(deleteKVFinal, (previousState, { payload }) => ({
       ...previousState,
       kvs: previousState.kvs.filter(kv => kv.key !== payload),
+    })),
+
+    on(setPrefix, (previousState, { payload }) => ({
+      ...previousState,
+      prefix: payload,
     })),
 
   )(state, action);

@@ -1,14 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import { select, Store } from '@ngrx/store';
 
-import { combineLatest, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
-
 import { IAppState } from '@app/store/states/app.state';
 import { createKV } from '@app/store/actions/etcd.action';
+import { selectPrefix } from '@app/store/selectors/etcd.selector';
 
 @Component({
   selector: 'app-new-dialog',
@@ -19,7 +17,6 @@ export class NewDialogComponent implements OnInit {
   newForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public prefix: string,
     public dialogRef: MatDialogRef<NewDialogComponent>,
     private store: Store<IAppState>,
     private formBuilder: FormBuilder,
@@ -30,11 +27,14 @@ export class NewDialogComponent implements OnInit {
       key: ['', Validators.required],
       value: ['', Validators.required],
     });
+    this.store.pipe(select(selectPrefix)).subscribe(
+      prefix => this.newForm.controls.key.setValue(prefix)
+    );
   }
 
   create() {
     this.store.dispatch(createKV({
-      key: `${this.prefix}${this.newForm.controls.key.value}`,
+      key: this.newForm.controls.key.value,
       value: this.newForm.controls.value.value,
     }));
     this.dialogRef.close();

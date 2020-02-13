@@ -7,14 +7,13 @@ import { map, tap, mergeMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { EtcdService } from '@app/services/etcd.service';
 import { EtcdHost } from '@app/models/etcd-host.model';
 import { KV } from '@app/models/kvs.model';
-import { selectHost } from '@app/store/selectors/etcd.selector';
+import { selectHost, selectPrefix } from '@app/store/selectors/etcd.selector';
 import { IAppState } from '@app/store/states/app.state';
 
 import {
   connect,
   connectFinal,
   connectFail,
-  ILoadKV,
   loadKV,
   loadKVFinal,
   loadKVFail,
@@ -61,13 +60,14 @@ export class Effects {
     return this.actions$.pipe(
       ofType(loadKV),
       map(action => action.payload),
-      mergeMap(({ host, prefix }: ILoadKV) => this.etcdService.loadKV(host, prefix).pipe(
+      withLatestFrom(this.store.pipe(select(selectPrefix))),
+      mergeMap(([ host, prefix ]: [ EtcdHost, string ]) => this.etcdService.loadKV(host, prefix).pipe(
         map(kvs => loadKVFinal(kvs)),
         catchError(err => {
           const message = 'Failed to retrieve key-values';
           console.error(message);
           console.log(err);
-          return of(loadKVFail({err, message}));
+          return of(loadKVFail({ err, message }));
         }),
       )),
     );

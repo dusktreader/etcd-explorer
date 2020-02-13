@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { connect, disconnect, loadKV } from '@app/store/actions/etcd.action';
+import { connect, disconnect } from '@app/store/actions/etcd.action';
 import { IAppState } from '@app/store/states/app.state';
 import { selectHost } from '@app/store/selectors/etcd.selector';
 import { EtcdHost } from '@app/models/etcd-host.model';

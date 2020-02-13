@@ -1,0 +1,24 @@
+.table-container {
+  width:100%;
+  max-height:calc(100vh - 10.70em);
+  overflow:auto;
+}
+.table-container table {
+  width: 100%;
+}
+.table-container tr {
+  transition:.2s ease-in-out all;
+  cursor:pointer;
+}
+.table-container tr:hover {
+  background:#daf0ff;
+}
+.table-container tr:hover .mat-avatar {
+  background:#ffffff;
+}
+.table-container tr.mat-header-row:hover {
+  background:none;
+}
+.pad-1 {
+  padding:1rem;
+}

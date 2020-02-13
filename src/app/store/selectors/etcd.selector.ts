@@ -24,3 +24,8 @@ export const selectKVs = createSelector(
   selectFeature,
   (state: IEtcdState) => state.kvs,
 );
+
+export const selectPrefix = createSelector(
+  selectFeature,
+  (state: IEtcdState) => state.prefix,
+);

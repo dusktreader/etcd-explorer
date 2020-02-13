@@ -14,12 +14,13 @@ import { map, tap, filter } from 'rxjs/operators';
 
 import { loadKV } from '@app/store/actions/etcd.action';
 import { IAppState } from '@app/store/states/app.state';
-import { selectHostNow, selectKVs } from '@app/store/selectors/etcd.selector';
+import { selectHost, selectHostNow, selectKVs, selectPrefix } from '@app/store/selectors/etcd.selector';
 import { EtcdHost } from '@app/models/etcd-host.model';
 import { KV } from '@app/models/kvs.model';
 
 import { EditDialogComponent } from '@app/presentation/edit-dialog/edit-dialog.component';
 import { NewDialogComponent } from '@app/presentation/new-dialog/new-dialog.component';
+import { PrefixDialogComponent } from '@app/presentation/prefix-dialog/prefix-dialog.component';
 
 @Component({
   selector: 'app-main',
@@ -27,9 +28,10 @@ import { NewDialogComponent } from '@app/presentation/new-dialog/new-dialog.comp
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  prefixForm: FormGroup;
   public noData: boolean;
   public dataSource = new MatTableDataSource<KV>();
+  public prefix$: Observable<string>;
+  public connected$: Observable<boolean>;
   displayedColumns = ['key', 'value' ];  // lastUpdated?
   paginatorSettings = {
     pageSize: 25,
@@ -46,18 +48,20 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.prefixForm = this.formBuilder.group({
-      prefix: ['pa/'],
-    });
     this.noData = true;
+    this.connected$ = this.store.pipe(
+      select(selectHost),
+      map(host => !!host),
+    );
     this.store.pipe(
       select(selectHostNow),
       filter(({ host, now }) => !!host),
     ).subscribe(
       ({ host, now }) => {
-        this.store.dispatch(loadKV({host, prefix: 'pa/'}));
+        this.store.dispatch(loadKV(host));
       },
     );
+    this.prefix$ = this.store.pipe(select(selectPrefix));
     this.store.pipe(
       select(selectKVs),
       map(kvs => !kvs ? [] : kvs),
@@ -69,12 +73,8 @@ export class MainComponent implements OnInit {
     });
   }
 
-  _stripPrefix(key) {
-    return key.replace(this.prefixForm.controls.prefix.value, '');
-  }
-
   add() {
-    this.dialog.open(NewDialogComponent, { data: this.prefixForm.controls.prefix.value });
+    this.dialog.open(NewDialogComponent);
   }
 
   tweak(kv: KV) {
@@ -82,4 +82,8 @@ export class MainComponent implements OnInit {
   }
 
   drop(key: string) {}
+
+  prefixer() {
+    this.dialog.open(PrefixDialogComponent);
+  }
 }

@@ -26,12 +26,8 @@ export const connectFail = createAction(TConnectFail, (payload: IFail) => ({
 export const TDisconnect = '[Disconnect] Disconnect from the etcd host';
 export const disconnect = createAction(TDisconnect);
 
-export interface ILoadKV {
-  host: EtcdHost;
-  prefix: string;
-}
 export const TLoadKV = '[LoadKV] Start loading key-values from etcd';
-export const loadKV = createAction(TLoadKV, (payload: ILoadKV) => ({
+export const loadKV = createAction(TLoadKV, (payload: EtcdHost) => ({
   payload,
 }));
 
@@ -90,3 +86,7 @@ export const createKVFail = createAction(TCreateKVFail, (payload: IFail) => ({
   payload,
 }));
 
+export const TSetPrefix = '[SetPrefix] Start setting the prefix';
+export const setPrefix = createAction(TSetPrefix, (payload: string) => ({
+  payload
+}));
